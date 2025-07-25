@@ -1,40 +1,46 @@
-# JINHE
 # GPT Agent Appointment & Staff Management System
 
-This repository is designed for use with GPT Agents (Gemini, ChatGPT Code Interpreter, etc.) to collaboratively build a responsive appointment, staff, and customer management system. The system supports multiple user roles and integrates scheduling, check-in, and financial reports.
+This project is designed for GPT Agents (Gemini, ChatGPT Code Interpreter, etc.) to collaboratively build a cross-device internal web application for appointment, staff, and customer management. It supports customisable roles, permission control, calendar scheduling, payment locking, and report analytics.
 
 ## 🧱 Tech Stack
 
 - React + Tailwind CSS (frontend)
-- Firebase (Firestore + Auth)
-- React Big Calendar
-- Recharts (for pie chart analytics)
-- React Hook Form + Yup/Zod (for validation)
-- Drag & drop: react-beautiful-dnd or dnd-kit
-
-## 🔐 Features Overview
-
-- Role-based permissions: Admin, Manager, Receptionist, Sales, Employee
-- Customer form builder (drag-and-drop)
-- Appointment booking with conflict detection and shift matching
-- Shift scheduler + appointment calendar integration
-- Check-in, payment lock and audit trail
-- Financial report with Pie Chart + detail view
-- Client attribution to Sales for performance tracking
+- Firebase Firestore + Firebase Auth (data layer)
+- React Big Calendar (appointment and shift views)
+- Recharts (pie chart and performance reports)
+- Yup or Zod + React Hook Form (form validation)
+- Drag-and-drop: react-beautiful-dnd or dnd-kit
 
 ## 🧠 GPT Agent Instructions
 
-Please infer the architecture from this README.
+Please infer the architecture and implement features based on this README and the linked spec file.
 
-- All data must sync with Firestore in real-time
-- Each page must split logic layers (fetch, state, render)
-- Show only work hours in calendar: 09:00–21:00
-- Appointment slots must be 15-minute intervals
-- After payment, lock all data from edit/delete (set `locked: true`)
-- Log all actions (create/update/delete) for later audit
-- UI must always show friendly loading and error state
-- Do not rely on frontend cache alone — Firestore is the single source of truth
+- Use React functional components, modular by page
+- Sync all state and data with Firestore in real time
+- Calendar only displays **09:00 to 21:00**, with **15-minute intervals**
+- All changes (create/edit/delete) must write a log entry
+- Prevent double-booking by checking real-time shift and appointment data
+- After payment is completed, set `locked: true` and disable all UI edits
+- User roles and permissions must be enforced both in UI and Firestore rules
+- Client form fields are fully customisable and sortable by drag-and-drop
+- Reports must match Firestore and support Excel export
+- Deletion must refresh the UI; stale state is not allowed
 
-## 📄 Full Spec (中文規格文件)
+## 👥 User Roles
 
-Please refer to [`docs/spec.zh.md`](./docs/spec.zh.md) for full requirements in Traditional Chinese.
+Custom roles are supported. The `administrator` can add, edit or delete any role and assign permissions.
+
+### Default roles (can be edited or removed):
+- Administrator: full access
+- Manager: appointments and scheduling
+- Receptionist: create clients and appointments
+- Employee: view personal schedule
+- Business Manager: view report based on referrals
+
+Each permission is assigned using granular keys like:
+- `appointment:create`
+- `client:form_design`
+- `report:read_referrer`
+
+## 📁 File Structure Suggestion
+
